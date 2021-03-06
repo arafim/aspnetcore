@@ -1,7 +1,9 @@
 // Copyright (c) .NET Foundation. All rights reserved.
 // Licensed under the Apache License, Version 2.0. See License.txt in the project root for license information.
 
+using System.Diagnostics.CodeAnalysis;
 using System.Threading.Tasks;
+using static Microsoft.AspNetCore.Internal.LinkerFlags;
 
 namespace Microsoft.AspNetCore.Components
 {
@@ -21,18 +23,10 @@ namespace Microsoft.AspNetCore.Components
         public RenderFragment? Body { get; set; }
 
         /// <inheritdoc />
-        public override Task SetParametersAsync(ParameterView parameters)
-        {
-            // Derived instances of LayoutComponentBase do not appear in any statically analyzable
-            // calls of OpenComponent<T> where T is well-known. As a result, relying on reflection
-            // (ComponentProperties.SetProperties) will result in the setter being trimmed away since
-            // it appears unused. Statically reference it to ensure the setter is preserved.
-            if (parameters.TryGetValue(BodyPropertyName, out RenderFragment? body))
-            {
-                Body = body;
-            }
-
-            return base.SetParametersAsync(parameters);
-        }
+        // Derived instances of LayoutComponentBase do not appear in any statically analyzable
+        // calls of OpenComponent<T> where T is well-known. Consequently we have to explicitly provide a hint to the trimmer to preserve
+        // properties.
+        [DynamicDependency(Component, typeof(LayoutComponentBase))]
+        public override Task SetParametersAsync(ParameterView parameters) => base.SetParametersAsync(parameters);
     }
 }

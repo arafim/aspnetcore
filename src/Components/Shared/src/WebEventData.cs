@@ -57,6 +57,18 @@ namespace Microsoft.AspNetCore.Components.Web
 
         public EventArgs EventArgs { get; }
 
+        [DynamicDependency(JsonSerialized, typeof(ChangeEventArgs))]
+        [DynamicDependency(JsonSerialized, typeof(ClipboardEventArgs))]
+        [DynamicDependency(JsonSerialized, typeof(DragEventArgs))]
+        [DynamicDependency(JsonSerialized, typeof(DragEventArgs))]
+        [DynamicDependency(JsonSerialized, typeof(FocusEventArgs))]
+        [DynamicDependency(JsonSerialized, typeof(KeyboardEventArgs))]
+        [DynamicDependency(JsonSerialized, typeof(MouseEventArgs))]
+        [DynamicDependency(JsonSerialized, typeof(ErrorEventArgs))]
+        [DynamicDependency(JsonSerialized, typeof(ProgressEventArgs))]
+        [DynamicDependency(JsonSerialized, typeof(TouchEventArgs))]
+        [DynamicDependency(JsonSerialized, typeof(PointerEventArgs))]
+        [DynamicDependency(JsonSerialized, typeof(WheelEventArgs))]
         private static EventArgs ParseEventArgsJson(Renderer renderer, ulong eventHandlerId, string eventName, string eventArgsJson)
         {
             try
